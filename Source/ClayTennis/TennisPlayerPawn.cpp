@@ -100,7 +100,9 @@ ATennisPlayerPawn::ATennisPlayerPawn()
 
 	RacketSlot = CreateDefaultSubobject<UChildActorComponent>(TEXT("RacketSlot"));
 	RacketSlot->SetupAttachment(CollisionRoot);
-	RacketSlot->SetRelativeLocation(FVector(30.0, 28.0, 0.0));
+	// Hand height (~130 cm world): root rides at 90, so +40 here. Offset to
+	// the right-front so the racket shows beside the character body.
+	RacketSlot->SetRelativeLocation(FVector(40.0, 30.0, 40.0));
 	RacketSlot->SetRelativeRotation(FRotator(0.0, -18.0, 0.0));
 	RacketSlot->SetChildActorClass(ATennisRacket::StaticClass());
 }
@@ -114,7 +116,8 @@ void ATennisPlayerPawn::BeginPlay()
 		Racket = Cast<ATennisRacket>(RacketSlot->GetChildActor());
 	}
 
-	ApplyBodyTint();
+	ApplyBodyVisual();
+
 	FaceNet();
 
 	if (FollowCamera)
@@ -136,10 +139,66 @@ void ATennisPlayerPawn::BeginPlay()
 	}
 }
 
-void ATennisPlayerPawn::ApplyBodyTint()
+void ATennisPlayerPawn::ApplyBodyVisual()
 {
 	if (!BodyMesh)
 	{
+		return;
+	}
+
+	// User-provided character model wins; the tinted cylinder is the fallback.
+	// The Tripo GLB imports as several body parts sharing one local frame, so
+	// every part is attached at a common transform and normalized together.
+	TArray<UStaticMesh*> Parts;
+	if (UStaticMesh* Single = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Sprites/SM_PlayerMale.SM_PlayerMale")))
+	{
+		Parts.Add(Single);
+	}
+	else
+	{
+		for (int32 Idx = 0; Idx < 32; ++Idx)
+		{
+			UStaticMesh* Part = LoadObject<UStaticMesh>(
+				nullptr, *FString::Printf(TEXT("/Game/Sprites/SM_PlayerPart_%02d.SM_PlayerPart_%02d"), Idx, Idx));
+			if (!Part)
+			{
+				break;
+			}
+			Parts.Add(Part);
+		}
+	}
+
+	if (Parts.Num() > 0)
+	{
+		// Combined bounds across all parts (unscaled, component space).
+		float MinZ = TNumericLimits<float>::Max(), MaxZ = TNumericLimits<float>::Lowest();
+		for (UStaticMesh* Part : Parts)
+		{
+			const FBoxSphereBounds B = Part->GetBounds();
+			MinZ = FMath::Min(MinZ, B.Origin.Z - B.BoxExtent.Z);
+			MaxZ = FMath::Max(MaxZ, B.Origin.Z + B.BoxExtent.Z);
+		}
+		const float HeightCm = FMath::Max(MaxZ - MinZ, 1.0f);
+		const float S = 180.0f / HeightCm;
+
+		for (int32 Idx = 0; Idx < Parts.Num(); ++Idx)
+		{
+			FName Name = MakeUniqueObjectName(GetRootComponent(), UStaticMeshComponent::StaticClass(),
+				*FString::Printf(TEXT("PlayerPartMesh%d"), Idx));
+			UStaticMeshComponent* PartMesh = NewObject<UStaticMeshComponent>(this, Name);
+			PartMesh->SetupAttachment(CollisionRoot);
+			PartMesh->SetStaticMesh(Parts[Idx]);
+			PartMesh->SetRelativeLocation(FVector(0.0, 0.0, -StandHeightCm - S * MinZ));
+			PartMesh->SetRelativeScale3D(FVector(S));
+			PartMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			PartMesh->SetGenerateOverlapEvents(false);
+			PartMesh->SetMobility(EComponentMobility::Movable);
+			PartMesh->RegisterComponent();
+		}
+
+		// Hide the fallback cylinder beneath the real model.
+		BodyMesh->SetVisibility(false);
+		BodyMesh->SetCastShadow(false);
 		return;
 	}
 

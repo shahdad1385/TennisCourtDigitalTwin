@@ -37,11 +37,13 @@ def mi(name):
 
 
 # ------------------------------------------------------------------ palette
-# Tuned to the Outsy blue-court reference (hard acrylic court).
-COL_IN = (0.045, 0.15, 0.42)      # inner court blue
-COL_APRON = (0.16, 0.34, 0.22)    # surrounding acrylic green
-COL_LINE = (0.96, 0.96, 0.94)     # line paint
-ROUGH_IN, ROUGH_APRON = 0.58, 0.62
+# Tuned to TennisRobotDigitalTwin's material_builder.py (the reference court):
+# inner = "US Open Cobalt Blue", outer = "Tournament Forest Green",
+# lines = matte white (roughness 0.4), net = near-black strings.
+COL_IN = (0.012, 0.04, 0.22)      # US Open cobalt blue
+COL_APRON = (0.02, 0.09, 0.03)    # tournament forest green
+COL_LINE = (0.90, 0.90, 0.90)     # matte white
+ROUGH_IN, ROUGH_APRON = 0.85, 0.90
 
 # ------------------------------------------------------------- ITF dims (cm)
 HALF_LEN = 1188.5          # 23.77 / 2
@@ -140,6 +142,7 @@ def build():
     try:
         U.MEL.set_material_instance_vector_parameter_value(
             LINE, "BaseColor", unreal.LinearColor(*COL_LINE, 1.0))
+        U.MEL.set_material_instance_scalar_parameter_value(LINE, "Roughness", 0.4)
     except Exception as exc:
         note("line brighten: %s" % exc)
     metal = mi("MI_Metal")
@@ -241,7 +244,9 @@ def build():
     note("net: %d cords, %d rows, %d band segments" % (cords, rows, bays))
 
     # ----------------------------------------------------------------- fence
-    FX, FY, FH = 2100.0, 1250.0, 400.0
+    # Outside the pawn camera boom reach (pawn at -1258 with an 8.8 m arm
+    # puts the camera at ~-2140; the old ±2100 fence swallowed it).
+    FX, FY, FH = 2600.0, 1600.0, 400.0
     U.spawn_mesh("Fence_E", "Cube", (FX, 0, FH / 2), (0.05, 2 * FY / 100.0, FH / 100.0), screen)
     U.spawn_mesh("Fence_W", "Cube", (-FX, 0, FH / 2), (0.05, 2 * FY / 100.0, FH / 100.0), screen)
     U.spawn_mesh("Fence_N", "Cube", (0, FY, FH / 2), (2 * FX / 100.0, 0.05, FH / 100.0), screen)
@@ -249,11 +254,11 @@ def build():
 
     n = 0
     for xx in (-FX, FX):
-        for yy in range(-1200, 1201, 400):
+        for yy in range(-1500, 1501, 500):
             n += 1
             U.spawn_mesh("FPost_%d" % n, "Cylinder", (xx, yy, FH / 2), (0.05, 0.05, FH / 200.0), metal)
     for yy in (-FY, FY):
-        for xx in range(-2000, 2001, 400):
+        for xx in range(-2500, 2501, 500):
             n += 1
             U.spawn_mesh("FPost_%d" % n, "Cylinder", (xx, yy, FH / 2), (0.05, 0.05, FH / 200.0), metal)
     note("fence posts: %d" % n)

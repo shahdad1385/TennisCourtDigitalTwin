@@ -163,8 +163,8 @@ protected:
 	FTennisSpringState AimYawSpring;
 	FTennisSpringState AimPitchSpring;
 
-	float CameraZoom = 880.0f;
-	float TargetCameraZoom = 880.0f;
+	float CameraZoom = 720.0f;
+	float TargetCameraZoom = 720.0f;
 
 	bool bCharging = false;
 	double ChargeStartTime = 0.0;
@@ -176,7 +176,7 @@ protected:
 
 	void UpdateMovement(float DeltaSeconds);
 	void UpdateCamera(float DeltaSeconds);
-	void ApplyBodyTint();
+	void ApplyBodyVisual();
 	void FaceNet();
 	FVector ClampHumanAim(const FVector& Target) const;
 };

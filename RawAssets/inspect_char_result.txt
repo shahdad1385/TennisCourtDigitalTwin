@@ -1,0 +1,20 @@
+/Game/Sprites/Arch27_002_03.Arch27_002_03 | StaticMesh | origin=(37.6, -31.9, 0.5) extent=(4.9, 9.2, 0.2)
+/Game/Sprites/Arch27_002_04.Arch27_002_04 | StaticMesh | origin=(37.6, -28.9, 0.6) extent=(2.9, 0.7, 0.0)
+/Game/Sprites/Arch27_002_12.Arch27_002_12 | StaticMesh | origin=(37.5, -19.1, 0.6) extent=(0.8, 3.6, 0.5)
+/Game/Sprites/Arch27_002_13.Arch27_002_13 | StaticMesh | origin=(37.6, -34.7, 0.5) extent=(4.7, 6.3, 0.1)
+/Game/Sprites/material0.material0 | MaterialInstanceConstant
+/Game/Sprites/material0_baseColor.material0_baseColor | Texture2D
+/Game/Sprites/material0_metallicRoughness.material0_metallicRoughness | Texture2D
+/Game/Sprites/material0_normal.material0_normal | Texture2D
+/Game/Sprites/realistic_male_character_texture_0.realistic_male_character_texture_0 | Texture2D
+/Game/Sprites/SM_Racket.SM_Racket | StaticMesh | origin=(37.5, -19.0, 0.6) extent=(0.8, 3.7, 0.5)
+/Game/Sprites/SM_Rock.SM_Rock | StaticMesh | origin=(1.6, -7.5, 14.4) extent=(160.9, 94.1, 15.6)
+/Game/Sprites/SM_TennisBall.SM_TennisBall | StaticMesh | origin=(0.0, 0.0, 0.0) extent=(100.0, 99.9, 99.5)
+/Game/Sprites/tripo_mat_d0bcade7.tripo_mat_d0bcade7 | MaterialInstanceConstant
+/Game/Sprites/tripo_node_d0bcade7_tripo_mat_d0bcade7_0.tripo_node_d0bcade7_tripo_mat_d0bcade7_0 | StaticMesh | origin=(0.8, -22.6, -6.3) extent=(11.7, 23.8, 43.7)
+/Game/Sprites/tripo_node_d0bcade7_tripo_mat_d0bcade7_0_039d09e3fa51967a9fb33b7502b23b45.tripo_node_d0bcade7_tripo_mat_d0bcade7_0_039d09e3fa51967a9fb33b7502b23b45 | StaticMesh | origin=(-2.0, 3.0, 0.0) extent=(10.5, 14.5, 50.0)
+/Game/Sprites/tripo_node_d0bcade7_tripo_mat_d0bcade7_0_168113c87f7b7d312f2756ab2ce2d9de.tripo_node_d0bcade7_tripo_mat_d0bcade7_0_168113c87f7b7d312f2756ab2ce2d9de | StaticMesh | origin=(-4.9, -7.4, -32.5) extent=(4.8, 4.1, 16.5)
+/Game/Sprites/tripo_node_d0bcade7_tripo_mat_d0bcade7_0_2a9d586ecd39f60bf25b2002b52c6fb1.tripo_node_d0bcade7_tripo_mat_d0bcade7_0_2a9d586ecd39f60bf25b2002b52c6fb1 | StaticMesh | origin=(-1.7, 1.6, -9.3) extent=(10.2, 15.3, 40.7)
+/Game/Sprites/tripo_node_d0bcade7_tripo_mat_d0bcade7_0_2e08f62f01ee92d5946fcbbda67e5a2e.tripo_node_d0bcade7_tripo_mat_d0bcade7_0_2e08f62f01ee92d5946fcbbda67e5a2e | StaticMesh | origin=(-2.0, -7.6, 2.1) extent=(10.5, 9.3, 47.8)
+/Game/Sprites/tripo_node_d0bcade7_tripo_mat_d0bcade7_0_698c9c648113f3e9ec64857705ad0b17.tripo_node_d0bcade7_tripo_mat_d0bcade7_0_698c9c648113f3e9ec64857705ad0b17 | StaticMesh | origin=(-2.1, 7.7, -10.9) extent=(9.9, 8.0, 39.1)
+/Game/Sprites/tripo_node_d0bcade7_tripo_mat_d0bcade7_0_9c56d2ce4d8179c5dd89f976fb14a545.tripo_node_d0bcade7_tripo_mat_d0bcade7_0_9c56d2ce4d8179c5dd89f976fb14a545 | StaticMesh | origin=(-0.0, 23.2, 2.9) extent=(12.5, 23.3, 28.1)

@@ -2,5 +2,5 @@
 import unreal
 import runpy
 
-runpy.run_path(r"C:\Projects\ClayTennis\Tools\inspect_lines.py", run_name="__main__")
+runpy.run_path(r"C:\Projects\ClayTennis\Tools\inspect_character.py", run_name="__main__")
 unreal.SystemLibrary.quit_editor()

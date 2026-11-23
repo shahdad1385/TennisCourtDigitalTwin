@@ -4,6 +4,7 @@ import unreal
 import runpy
 
 runpy.run_path(r"C:\Projects\ClayTennis\Tools\import_sprites.py", run_name="__main__")
+runpy.run_path(r"C:\Projects\ClayTennis\Tools\import_character.py", run_name="__main__")
 runpy.run_path(r"C:\Projects\ClayTennis\Tools\build_level_v4.py", run_name="__main__")
 
 les = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
