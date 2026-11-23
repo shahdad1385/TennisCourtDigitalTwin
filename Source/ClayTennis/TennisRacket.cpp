@@ -83,6 +83,34 @@ void ATennisRacket::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// User-provided sprite model wins over the primitive racket; it is attached
+	// to SceneRoot so PlaySwing rotates it exactly like the primitives did.
+	if (UStaticMesh* Sprite = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Sprites/SM_Racket.SM_Racket")))
+	{
+		UStaticMeshComponent* SpriteMesh = NewObject<UStaticMeshComponent>(this, TEXT("SpriteRacketMesh"));
+		SpriteMesh->SetupAttachment(SceneRoot);
+		SpriteMesh->SetStaticMesh(Sprite);
+		// Normalize so the longest bounds axis equals a 68 cm racket.
+		const FBoxSphereBounds Bounds = Sprite->GetBounds();
+		const float Longest = FMath::Max3(Bounds.BoxExtent.X, Bounds.BoxExtent.Y, Bounds.BoxExtent.Z);
+		if (Longest > 0.5f)
+		{
+			SpriteMesh->SetRelativeScale3D(FVector(68.0f / (2.0f * Longest)));
+		}
+		SpriteMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		SpriteMesh->SetGenerateOverlapEvents(false);
+		SpriteMesh->SetMobility(EComponentMobility::Movable);
+		SpriteMesh->RegisterComponent();
+
+		if (Handle) { Handle->SetVisibility(false); }
+		FrameTop->SetVisibility(false);
+		FrameBottom->SetVisibility(false);
+		FrameLeft->SetVisibility(false);
+		FrameRight->SetVisibility(false);
+		StringBed->SetVisibility(false);
+		return;
+	}
+
 	if (UMaterialInterface* Carbon = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Materials/MI_Carbon.MI_Carbon")))
 	{
 		Handle->SetMaterial(0, Carbon);

@@ -1,8 +1,10 @@
-"""Run the level builder inside the editor (maps can only be saved with an editor world)."""
+"""Run the sprite importer, then the level builder inside the editor
+(maps can only be saved with an editor world). One editor session total."""
 import unreal
 import runpy
 
-runpy.run_path(r"C:\Projects\ClayTennis\Tools\build_level_v3.py", run_name="__main__")
+runpy.run_path(r"C:\Projects\ClayTennis\Tools\import_sprites.py", run_name="__main__")
+runpy.run_path(r"C:\Projects\ClayTennis\Tools\build_level_v4.py", run_name="__main__")
 
 les = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
 out = []

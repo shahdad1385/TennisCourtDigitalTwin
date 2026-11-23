@@ -42,7 +42,19 @@ void ATennisBall::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (BallMesh)
+	// User-provided sprite model wins; the tinted engine sphere is the fallback.
+	if (UStaticMesh* Sprite = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Sprites/SM_TennisBall.SM_TennisBall")))
+	{
+		BallMesh->SetStaticMesh(Sprite);
+		// Normalize so the longest bounds axis equals the 6.7 cm diameter.
+		const FBoxSphereBounds Bounds = Sprite->GetBounds();
+		const float Longest = FMath::Max3(Bounds.BoxExtent.X, Bounds.BoxExtent.Y, Bounds.BoxExtent.Z);
+		if (Longest > 0.5f)
+		{
+			BallMesh->SetRelativeScale3D(FVector(BallDiameterCm / (2.0f * Longest)));
+		}
+	}
+	else if (BallMesh)
 	{
 		if (UMaterialInterface* BallMaterial = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Materials/MI_TennisBall.MI_TennisBall")))
 		{

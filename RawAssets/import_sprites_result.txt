@@ -1,0 +1,22 @@
+=== import_sprites ===
+extracted: skipped, already extracted (source/racket.fbx present) C:\Projects\ClayTennis\RawAssets\Sprites\racket
+extracted: skipped, already extracted (scene.gltf present) C:\Projects\ClayTennis\RawAssets\Sprites\tennisball
+extracted: skipped, already extracted (Desert_Western_Pile_Rock_Small_01_ul4lehiga_High.fbx present) C:\Projects\ClayTennis\RawAssets\Sprites\desert_western_pile_rock_small_01_ul4lehiga_high
+extracted: skipped, already extracted (source/Girl In Blue.blend present) C:\Projects\ClayTennis\RawAssets\Sprites\girl-in-blue-rigged
+extracted: skipped, already extracted (source/thailand_girl_1.blend present) C:\Projects\ClayTennis\RawAssets\Sprites\thailand-girl-number-1-rigged
+skipped: C:\Projects\ClayTennis\RawAssets\Sprites\girl-in-blue-rigged\source\Girl In Blue.blend - blend unsupported, needs FBX/glTF export
+skipped: C:\Projects\ClayTennis\RawAssets\Sprites\thailand-girl-number-1-rigged\source\thailand_girl_1.blend - blend unsupported, needs FBX/glTF export
+imported: /Game/Sprites/Textures/T_Sprt_Ball_BaseColor
+imported: /Game/Sprites/Textures/T_Sprt_Ball_Normal
+imported: /Game/Sprites/Textures/T_Sprt_Ball_MetalRough
+imported: /Game/Sprites/Textures/T_Sprt_Rock_BaseColor
+imported: /Game/Sprites/Textures/T_Sprt_Rock_Normal
+imported: /Game/Sprites/Textures/T_Sprt_Rock_Roughness
+imported: /Game/Sprites/SM_Racket
+imported: /Game/Sprites/SM_TennisBall
+imported: /Game/Sprites/SM_Rock
+skipped: SM_Rock already has materials from import (1 slots) - left untouched
+skipped: SM_TennisBall already has materials from import (1 slots) - left untouched
+skipped: SM_Racket already has materials from import (1 slots) - left untouched
+inventory: /Game/Sprites -> /Game/Sprites/Arch27_002_03.Arch27_002_03, /Game/Sprites/Arch27_002_04.Arch27_002_04, /Game/Sprites/Arch27_002_12.Arch27_002_12, /Game/Sprites/Arch27_002_13.Arch27_002_13, /Game/Sprites/material0.material0, /Game/Sprites/material0_baseColor.material0_baseColor, /Game/Sprites/material0_metallicRoughness.material0_metallicRoughness, /Game/Sprites/material0_normal.material0_normal, /Game/Sprites/SM_Racket.SM_Racket, /Game/Sprites/SM_Rock.SM_Rock, /Game/Sprites/SM_TennisBall.SM_TennisBall, /Game/Sprites/Textures/T_Sprt_Ball_BaseColor.T_Sprt_Ball_BaseColor, /Game/Sprites/Textures/T_Sprt_Ball_MetalRough.T_Sprt_Ball_MetalRough, /Game/Sprites/Textures/T_Sprt_Ball_Normal.T_Sprt_Ball_Normal, /Game/Sprites/Textures/T_Sprt_Rock_BaseColor.T_Sprt_Rock_BaseColor, /Game/Sprites/Textures/T_Sprt_Rock_Normal.T_Sprt_Rock_Normal, /Game/Sprites/Textures/T_Sprt_Rock_Roughness.T_Sprt_Rock_Roughness
+inventory: /Game/Sprites/Textures -> /Game/Sprites/Textures/T_Sprt_Ball_BaseColor.T_Sprt_Ball_BaseColor, /Game/Sprites/Textures/T_Sprt_Ball_MetalRough.T_Sprt_Ball_MetalRough, /Game/Sprites/Textures/T_Sprt_Ball_Normal.T_Sprt_Ball_Normal, /Game/Sprites/Textures/T_Sprt_Rock_BaseColor.T_Sprt_Rock_BaseColor, /Game/Sprites/Textures/T_Sprt_Rock_Normal.T_Sprt_Rock_Normal, /Game/Sprites/Textures/T_Sprt_Rock_Roughness.T_Sprt_Rock_Roughness

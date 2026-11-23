@@ -1,0 +1,7 @@
+purged actors: 295
+lines: 12 ITF markings
+court components hidden: 41
+net: 33 cords, 4 rows, 32 band segments
+fence posts: 36
+sprite rocks: 3
+saved, actors=295
