@@ -646,13 +646,18 @@ void ATennisPlayerPawn::PlayHitReaction(bool bServe)
 {
 	ShakeDuration = bServe ? 0.26f : 0.20f;
 	ShakeTime = ShakeDuration;
-	ShakeAmplitude = bServe ? 3.2f : 2.0f;
 
 	// Procedural swing: torso twist + racket arc together read as a stroke.
 	SwingStyle = bServe ? 1 : 0;
 	SwingAnimDuration = bServe ? 0.38f : 0.26f;
 	SwingAnimTime = SwingAnimDuration;
 
+	// The child actor spawns deferred: it can be missing at BeginPlay, so
+	// re-acquire it here (a null Racket silently skipped every swing).
+	if (!Racket && RacketSlot)
+	{
+		Racket = Cast<ATennisRacket>(RacketSlot->GetChildActor());
+	}
 	if (Racket)
 	{
 		Racket->PlaySwing(bServe);

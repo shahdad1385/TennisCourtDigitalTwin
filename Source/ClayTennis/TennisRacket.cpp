@@ -199,4 +199,5 @@ void ATennisRacket::PlaySwing(bool bServe)
 	SwingTime = 0.001f;
 	SwingDuration = bServe ? 0.38f : 0.28f;
 	bServeSwing = bServe;
+	UE_LOG(LogTemp, Warning, TEXT("[SWING] started serve=%d rot=%s"), bServe ? 1 : 0, *BaseRelativeRotation.ToString());
 }

@@ -141,6 +141,7 @@ protected:
 
 	FTimerHandle StartMatchTimer;
 	FTimerHandle NextPointTimer;
+	FTimerHandle AutoServeTimer;
 	FTimerHandle AIServeTimer;
 	FTimerHandle SecondServeTimer;
 	FTimerHandle LetTimer;

@@ -882,4 +882,15 @@ void ATennisGameMode::BeginAutoShot()
 	{
 		FPlatformMisc::RequestExit(false);
 	}), 32.0f, false);
+
+	// Test-only: the human server never clicks in an unattended run, so the
+	// match waits in PreServe forever. Auto-serve for the player so rallies,
+	// points, and the swing animation all actually run.
+	World->GetTimerManager().SetTimer(AutoServeTimer, FTimerDelegate::CreateLambda([this]()
+	{
+		if (RallyState == ERallyState::PreServe && Scoring && Scoring->GetServer() == 0 && HumanPawn)
+		{
+			ExecuteHumanServe(HumanPawn, 0.7f, GetServeTargetForServer());
+		}
+	}), 4.5f, true);
 }
