@@ -812,27 +812,38 @@ void ATennisGameMode::BeginAutoShot()
 		return;
 	}
 
+	// LookDev.txt: "x y z pitch yaw roll" for a free camera, or the single
+	// token "pawn" to keep the player pawn's own spring-arm camera (verifies
+	// the real gameplay framing).
 	FVector Loc(-1600.0f, -700.0f, 300.0f);
 	FRotator Rot(-6.0f, 21.0f, 0.0f);
+	bool bUsePawnCamera = false;
 	FString Text;
 	if (FFileHelper::LoadFileToString(Text, *(FPaths::ProjectSavedDir() / TEXT("LookDev.txt"))))
 	{
 		TArray<FString> Parts;
 		Text.ParseIntoArrayWS(Parts);
-		if (Parts.Num() >= 6)
+		if (Parts.Num() >= 1 && Parts[0].Equals(TEXT("pawn"), ESearchCase::IgnoreCase))
+		{
+			bUsePawnCamera = true;
+		}
+		else if (Parts.Num() >= 6)
 		{
 			Loc = FVector(FCString::Atof(*Parts[0]), FCString::Atof(*Parts[1]), FCString::Atof(*Parts[2]));
 			Rot = FRotator(FCString::Atof(*Parts[3]), FCString::Atof(*Parts[4]), FCString::Atof(*Parts[5]));
 		}
 	}
 
-	ACameraActor* Cam = World->SpawnActor<ACameraActor>(ACameraActor::StaticClass(), Loc, Rot);
-	if (Cam)
+	if (!bUsePawnCamera)
 	{
-		Cam->SetActorLabel(TEXT("AutoShotCam"));
-		if (APlayerController* PC = World->GetFirstPlayerController())
+		ACameraActor* Cam = World->SpawnActor<ACameraActor>(ACameraActor::StaticClass(), Loc, Rot);
+		if (Cam)
 		{
-			PC->SetViewTarget(Cam);
+			Cam->SetActorLabel(TEXT("AutoShotCam"));
+			if (APlayerController* PC = World->GetFirstPlayerController())
+			{
+				PC->SetViewTarget(Cam);
+			}
 		}
 	}
 
@@ -840,6 +851,26 @@ void ATennisGameMode::BeginAutoShot()
 	FTimerHandle QuitTimer;
 	World->GetTimerManager().SetTimer(ShotTimer, FTimerDelegate::CreateLambda([this]()
 	{
+		// Ground truth for framing: what is the view target and where is it?
+		UWorld* ShotWorld = GetWorld();
+		if (ShotWorld && GEngine)
+		{
+			if (APlayerController* PC = ShotWorld->GetFirstPlayerController())
+			{
+				if (const AActor* Target = PC->GetViewTarget())
+				{
+					UE_LOG(LogTemp, Warning, TEXT("[AUTOSHOT] view target=%s loc=%s rot=%s"),
+						*Target->GetName(), *Target->GetActorLocation().ToString(),
+						*Target->GetActorRotation().ToString());
+					if (const ATennisPlayerPawn* Pawn = Cast<ATennisPlayerPawn>(Target))
+					{
+						UE_LOG(LogTemp, Warning, TEXT("[AUTOSHOT] pawn loc=%s rootScale=%s"),
+							*Pawn->GetActorLocation().ToString(),
+							*Pawn->GetRootComponent()->GetComponentScale().ToString());
+					}
+				}
+			}
+		}
 		FScreenshotRequest::RequestScreenshot(TEXT("AutoShot"), false, true);
 		UE_LOG(LogTemp, Warning, TEXT("[AUTOSHOT] screenshot requested"));
 		{

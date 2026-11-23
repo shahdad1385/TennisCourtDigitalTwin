@@ -101,10 +101,9 @@ def build():
     sd = tex("T_RacketStrings_Albedo")
     ms = U.new_material("M_RacketStrings", two_sided=True, blend=unreal.BlendMode.BLEND_MASKED)
     if sd:
-        uv = uv_node(ms, 2.4, 3.0, -900, -200)
+        # Default 0..1 UVs only: TextureCoordinate/UV-node math breaks material
+        # compilation in this project (see AGENTS.md trap 2).
         t = U.tex_param(ms, "StringTex", -650, -200, default=sd)
-        t.set_editor_property("sampler_type", unreal.MaterialSamplerType.SAMPLERTYPE_MASKS)
-        U.MEL.connect_material_expressions(uv, "", t, "UVs")
         U.MEL.connect_material_property(t, "RGB", unreal.MaterialProperty.MP_BASE_COLOR)
         U.MEL.connect_material_property(t, "A", unreal.MaterialProperty.MP_OPACITY_MASK)
     U.compile_and_save(ms)

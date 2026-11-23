@@ -69,7 +69,9 @@ ATennisPlayerPawn::ATennisPlayerPawn()
 	BodyMesh->SetupAttachment(CollisionRoot);
 	BodyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BodyMesh->SetGenerateOverlapEvents(false);
-	BodyMesh->SetRelativeScale3D(FVector(0.42, 0.42, 1.8));
+	// Cylinder is r50 x h200 cm: scale 0.36/0.36/0.90 -> r18 cm, 180 cm tall.
+	// The root rides at StandHeightCm (90), so the body spans 0..180 cm.
+	BodyMesh->SetRelativeScale3D(FVector(0.36, 0.36, 0.90));
 	BodyMesh->SetCastShadow(true);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> CylinderFinder(TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));

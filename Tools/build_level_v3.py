@@ -43,7 +43,14 @@ def build():
 
     clay = mi("MI_ClayCourt")
     apron = mi("MI_ClayApron")
-    line = mi("MI_CourtLine")
+    # Lines: MI_LinePaint (parent M_LinePaint) with a brightened BaseColor
+    # override; MI_CourtLine is a legacy instance with unknown params.
+    line = mi("MI_LinePaint")
+    try:
+        U.MEL.set_material_instance_vector_parameter_value(
+            line, "BaseColor", unreal.LinearColor(0.94, 0.93, 0.90, 1.0))
+    except Exception as exc:
+        note("line brighten: %s" % exc)
     metal = mi("MI_Metal")
     screen = mi("MI_Windscreen")
     hedge = mi("MI_Hedge")
@@ -59,26 +66,43 @@ def build():
     # outer ground: one flat colour plane (no texture stretching)
     U.spawn_plane("Ground_Outer", (0, 0, -8.0), (600, 600), concrete)
 
-    # apron: 5 m tiles so the 4K clay texture repeats without material UV math
+    # tile orientation 0/90/180/270 from a cheap spatial hash: adjacent tiles
+    # sample the same 4K texture in different orientations, which breaks the
+    # periodic blotch pattern ("banding") without any UV-node math. A 90/270
+    # rotation swaps the footprint, so the scale axes swap to compensate.
+    def tile_yaw(i, j):
+        return (((i * 73856093) ^ (j * 19349663)) & 3) * 90
+
+    def tile_scale(i, j, dx, dy):
+        if ((i * 73856093) ^ (j * 19349663)) & 1:
+            return (dy / 100.0, dx / 100.0)
+        return (dx / 100.0, dy / 100.0)
+
+    # apron: large tiles so the 4K clay texture repeats as rarely as possible
+    # without material UV math (bigger tiles = banding at half the frequency)
     ax0, ax1, ay0, ay1 = -2200.0, 2200.0, -1300.0, 1300.0
-    nx, ny = 8, 5
+    nx, ny = 3, 2
     dx, dy = (ax1 - ax0) / nx, (ay1 - ay0) / ny
     for i in range(nx):
         for j in range(ny):
             cx = ax0 + dx * (i + 0.5)
             cy = ay0 + dy * (j + 0.5)
-            rot180 = (0.0, 180.0, 0.0) if (i + j) % 2 else (0.0, 0.0, 0.0)
-            U.spawn_plane("Apron_%d_%d" % (i, j), (cx, cy, -0.5), (dx / 100.0, dy / 100.0), apron, rotation=rot180)
+            yaw = tile_yaw(i, j)
+            sx, sy = tile_scale(i, j, dx, dy)
+            U.spawn_plane("Apron_%d_%d" % (i, j), (cx, cy, -0.5), (sx, sy), apron, rotation=(0.0, yaw, 0.0))
 
-    # court: 5 x 2 tiles
-    nx, ny = 5, 2
+    # court: 2 x 1 tiles (~11.9 x 11.0 m each): the 4K texture pattern now
+    # repeats every half-court instead of every 5 m, which kills the visible
+    # banding grid; the two tiles get different orientations from tile_yaw.
+    nx, ny = 2, 1
     dx, dy = (2 * L) / nx, (2 * W) / ny
     for i in range(nx):
         for j in range(ny):
             cx = -L + dx * (i + 0.5)
             cy = -W + dy * (j + 0.5)
-            rot180 = (0.0, 180.0, 0.0) if (i + j) % 2 else (0.0, 0.0, 0.0)
-            U.spawn_plane("Court_%d_%d" % (i, j), (cx, cy, 0.0), (dx / 100.0, dy / 100.0), clay, rotation=rot180)
+            yaw = tile_yaw(i, j)
+            sx, sy = tile_scale(i, j, dx, dy)
+            U.spawn_plane("Court_%d_%d" % (i, j), (cx, cy, 0.0), (sx, sy), clay, rotation=(0.0, yaw, 0.0))
 
     court_cls = getattr(unreal, "TennisCourt", None)
     if court_cls:
@@ -101,7 +125,8 @@ def build():
             note("court hide: %s" % exc)
 
     # ---------------------------------------------------------------- lines
-    T, Z = 0.06, 0.40
+    # ITF width is 5 cm; 7 cm reads better at game distance (scope priority 3).
+    T, Z = 0.07, 0.40
 
     def lx(label, x, y, length):
         U.spawn_mesh(label, "Cube", (x, y, Z), (T, length, 0.003), line)
@@ -249,7 +274,8 @@ def build():
     try:
         cc.set_editor_property("current_focal_length", 30.0)
         cc.set_editor_property("current_aperture", 5.6)
-        cam.set_editor_property("auto_activate_for_player", unreal.AutoReceiveInput.PLAYER0)
+        # No auto_activate_for_player: the lookdev camera must never steal the
+        # gameplay view in -game mode; the pawn spring arm is authoritative.
     except Exception as exc:
         note("cam %s" % exc)
 
