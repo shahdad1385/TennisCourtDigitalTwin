@@ -24,3 +24,7 @@ desktop.ini
 # Crash / logs
 *.log
 crash-*.dmp
+
+# oversized sprite source (58.7 MB > GitHub 50 MB limit); kept locally only
+Sprites/desert_western_pile_rock_small_01_ul4lehiga_high.zip
+__pycache__/
