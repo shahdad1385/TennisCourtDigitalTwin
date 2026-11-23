@@ -110,9 +110,11 @@ ATennisPlayerPawn::ATennisPlayerPawn()
 
 	RacketSlot = CreateDefaultSubobject<UChildActorComponent>(TEXT("RacketSlot"));
 	RacketSlot->SetupAttachment(CollisionRoot);
-	// Hand height (~130 cm world): root rides at 90, so +40 here. Offset to
-	// the right-front so the racket shows beside the character body.
-	RacketSlot->SetRelativeLocation(FVector(40.0, 30.0, 40.0));
+	// Actor-relative (NOT the hand bone): the mannequin's bone orientation is
+	// unpredictable and can bury the racket - the twin project's fix. Their
+	// (12, -32, 88) assumes a feet-origin player; our root rides at the hip
+	// (90 cm), so the racket ends up at ~88 cm world: waist/hand height.
+	RacketSlot->SetRelativeLocation(FVector(12.0, -32.0, -2.0));
 	RacketSlot->SetRelativeRotation(FRotator(0.0, -18.0, 0.0));
 	RacketSlot->SetChildActorClass(ATennisRacket::StaticClass());
 }
@@ -180,23 +182,26 @@ void ATennisPlayerPawn::ApplyBodyVisual()
 			PlayerMesh->PlayAnimation(Idle, true);
 		}
 
+		// glTF-era copies of Manny face +Y; yaw -90 maps forward onto +X
+		// (toward the net) so Walk/Run run along the court, not into the walls.
+		PlayerMesh->SetRelativeRotation(FRotator(0.0, -90.0, 0.0));
+
+		// Team look: player 0 wears the _02 outfit, CPU the dark _01.
+		UMaterialInterface* Outfit = LoadObject<UMaterialInterface>(nullptr,
+			(PlayerIndex == 0)
+				? TEXT("/Game/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_02.MI_Manny_02")
+				: TEXT("/Game/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_01.MI_Manny_01"));
+		if (Outfit)
+		{
+			PlayerMesh->SetMaterial(0, Outfit);
+		}
+
 		PlayerMesh->SetVisibility(true);
 		LocomotionAnimState = 0;
 
 		// Hide the static fallbacks beneath the real model.
 		BodyMesh->SetVisibility(false);
 		BodyMesh->SetCastShadow(false);
-
-		// Racket rides the right hand bone (the swing still rotates it).
-		// Pitch +90 maps the racket's grip->head axis (+Z) onto the hand
-		// bone's finger axis (+X); grip sits at the bone origin.
-		if (RacketSlot)
-		{
-			RacketSlot->AttachToComponent(PlayerMesh,
-				FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r"));
-			RacketSlot->SetRelativeLocation(FVector::ZeroVector);
-			RacketSlot->SetRelativeRotation(FRotator(90.0, 0.0, 0.0));
-		}
 		return;
 	}
 
@@ -289,13 +294,18 @@ void ATennisPlayerPawn::UpdateSwingAnim(float DeltaSeconds)
 	{
 		SwingAnimTime = FMath::Max(0.0f, SwingAnimTime - DeltaSeconds);
 		const float Alpha = 1.0f - (SwingAnimTime / SwingAnimDuration);
-		// One smooth torso twist: backswing then follow-through.
-		const float Twist = -55.0f * FMath::Sin(Alpha * PI);
-		PlayerMesh->SetRelativeRotation(FRotator(0.0f, Twist, 0.0f));
+		const float Envelope = FMath::Sin(Alpha * PI);
+		// Base yaw -90 (the mesh's imported orientation) composed with the
+		// swing: groundstrokes twist about yaw, serves chop overhead.
+		const float BaseYaw = -90.0f;
+		const FRotator Swing = (SwingStyle == 1)
+			? FRotator(-45.0f * Envelope, BaseYaw - 20.0f * Envelope, 0.0f)
+			: FRotator(0.0f, BaseYaw - 55.0f * Envelope, 0.0f);
+		PlayerMesh->SetRelativeRotation(Swing);
 	}
-	else if (!PlayerMesh->GetRelativeRotation().IsNearlyZero())
+	else if (!PlayerMesh->GetRelativeRotation().IsNearlyZero(0.1f))
 	{
-		PlayerMesh->SetRelativeRotation(FRotator::ZeroRotator);
+		PlayerMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	}
 }
 
@@ -639,6 +649,7 @@ void ATennisPlayerPawn::PlayHitReaction(bool bServe)
 	ShakeAmplitude = bServe ? 3.2f : 2.0f;
 
 	// Procedural swing: torso twist + racket arc together read as a stroke.
+	SwingStyle = bServe ? 1 : 0;
 	SwingAnimDuration = bServe ? 0.38f : 0.26f;
 	SwingAnimTime = SwingAnimDuration;
 

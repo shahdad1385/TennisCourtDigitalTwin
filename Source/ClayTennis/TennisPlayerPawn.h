@@ -190,5 +190,7 @@ protected:
 	void UpdateLocomotionAnim();
 	void UpdateSwingAnim(float DeltaSeconds);
 	void FaceNet();
+
+	int32 SwingStyle = 0;  // 0 groundstroke twist, 1 serve overhead
 	FVector ClampHumanAim(const FVector& Target) const;
 };

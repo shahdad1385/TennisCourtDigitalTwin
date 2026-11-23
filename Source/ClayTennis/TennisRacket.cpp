@@ -93,10 +93,18 @@ void ATennisRacket::BeginPlay()
 		// Normalize so the longest bounds axis equals a 68 cm racket.
 		const FBoxSphereBounds Bounds = Sprite->GetBounds();
 		const float Longest = FMath::Max3(Bounds.BoxExtent.X, Bounds.BoxExtent.Y, Bounds.BoxExtent.Z);
+		const FRotator Upright(0.0, 0.0, 90.0);
+		float S = 1.0f;
 		if (Longest > 0.5f)
 		{
-			SpriteMesh->SetRelativeScale3D(FVector(68.0f / (2.0f * Longest)));
+			S = 68.0f / (2.0f * Longest);
+			SpriteMesh->SetRelativeScale3D(FVector(S));
 		}
+		// The FBX lies flat (long axis ~Y): roll upright so the head is up.
+		// Its pivot is ~40 cm away from the geometry (bounds origin), so the
+		// component is offset by -Rot*S*Origin to re-center on the slot.
+		SpriteMesh->SetRelativeRotation(Upright);
+		SpriteMesh->SetRelativeLocation(Upright.RotateVector(-Bounds.Origin * S));
 		SpriteMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		SpriteMesh->SetGenerateOverlapEvents(false);
 		SpriteMesh->SetMobility(EComponentMobility::Movable);
