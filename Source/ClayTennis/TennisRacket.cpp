@@ -83,39 +83,49 @@ void ATennisRacket::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// User-provided sprite model wins over the primitive racket; it is attached
-	// to SceneRoot so PlaySwing rotates it exactly like the primitives did.
-	if (UStaticMesh* Sprite = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Sprites/SM_Racket.SM_Racket")))
+	// 1) Preferred: the textured tennis_racquet.glb from the twin project.
+	TArray<UStaticMesh*> Parts;
+	for (int32 Idx = 0; Idx < 8; ++Idx)
 	{
-		UStaticMeshComponent* SpriteMesh = NewObject<UStaticMeshComponent>(this, TEXT("SpriteRacketMesh"));
-		SpriteMesh->SetupAttachment(SceneRoot);
-		SpriteMesh->SetStaticMesh(Sprite);
-		// Normalize so the longest bounds axis equals a 68 cm racket.
-		const FBoxSphereBounds Bounds = Sprite->GetBounds();
-		const float Longest = FMath::Max3(Bounds.BoxExtent.X, Bounds.BoxExtent.Y, Bounds.BoxExtent.Z);
-		const FRotator Upright(0.0, 0.0, 90.0);
-		float S = 1.0f;
-		if (Longest > 0.5f)
+		const TCHAR* Path = (Idx == 0)
+			? TEXT("/Game/Sprites/SM_RacketReal.SM_RacketReal")
+			: *FString::Printf(TEXT("/Game/Sprites/SM_RacketReal_%d.SM_RacketReal_%d"), Idx, Idx);
+		if (UStaticMesh* M = LoadObject<UStaticMesh>(nullptr, Path))
 		{
-			S = 68.0f / (2.0f * Longest);
-			SpriteMesh->SetRelativeScale3D(FVector(S));
+			Parts.Add(M);
 		}
-		// The FBX lies flat (long axis ~Y): roll upright so the head is up.
-		// Its pivot is ~40 cm away from the geometry (bounds origin), so the
-		// component is offset by -Rot*S*Origin to re-center on the slot.
-		SpriteMesh->SetRelativeRotation(Upright);
-		SpriteMesh->SetRelativeLocation(Upright.RotateVector(-Bounds.Origin * S));
-		SpriteMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		SpriteMesh->SetGenerateOverlapEvents(false);
-		SpriteMesh->SetMobility(EComponentMobility::Movable);
-		SpriteMesh->RegisterComponent();
+		else if (Idx == 0)
+		{
+			break;  // no real racket at all
+		}
+		else
+		{
+			break;
+		}
+	}
 
-		if (Handle) { Handle->SetVisibility(false); }
-		FrameTop->SetVisibility(false);
-		FrameBottom->SetVisibility(false);
-		FrameLeft->SetVisibility(false);
-		FrameRight->SetVisibility(false);
-		StringBed->SetVisibility(false);
+	// 2) Fallback: every part of the racket.zip FBX (the frame, strings and
+	// handle are separate meshes sharing one local frame; using just the
+	// renamed part rendered a lone slab - the string bed).
+	if (Parts.Num() == 0)
+	{
+		if (UStaticMesh* Single = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Sprites/SM_Racket.SM_Racket")))
+		{
+			Parts.Add(Single);
+		}
+		for (int32 Idx = 0; Idx < 16; ++Idx)
+		{
+			if (UStaticMesh* M = LoadObject<UStaticMesh>(
+				nullptr, *FString::Printf(TEXT("/Game/Sprites/Arch27_002_%02d.Arch27_002_%02d"), Idx, Idx)))
+			{
+				Parts.Add(M);
+			}
+		}
+	}
+
+	if (Parts.Num() > 0)
+	{
+		BuildSpriteRacket(Parts);
 		return;
 	}
 
@@ -160,6 +170,55 @@ void ATennisRacket::ApplyTints()
 	TintComponent(FrameLeft, FrameColor);
 	TintComponent(FrameRight, FrameColor);
 	TintComponent(StringBed, StringColor);
+}
+
+void ATennisRacket::BuildSpriteRacket(const TArray<UStaticMesh*>& Parts)
+{
+	// Parts share one local frame (the FBX/GLB node space). Compute the
+	// combined bounds, normalize the assembly to 68 cm, roll it upright
+	// (the source lies flat, long axis ~Y), and keep inter-part offsets.
+	const float Big = TNumericLimits<float>::Max();
+	FVector Min(Big, Big, Big), Max(-Big, -Big, -Big);
+	for (UStaticMesh* Part : Parts)
+	{
+		const FBoxSphereBounds B = Part->GetBounds();
+		Min.X = FMath::Min(Min.X, B.Origin.X - B.BoxExtent.X);
+		Min.Y = FMath::Min(Min.Y, B.Origin.Y - B.BoxExtent.Y);
+		Min.Z = FMath::Min(Min.Z, B.Origin.Z - B.BoxExtent.Z);
+		Max.X = FMath::Max(Max.X, B.Origin.X + B.BoxExtent.X);
+		Max.Y = FMath::Max(Max.Y, B.Origin.Y + B.BoxExtent.Y);
+		Max.Z = FMath::Max(Max.Z, B.Origin.Z + B.BoxExtent.Z);
+	}
+	const FVector Center = (Min + Max) * 0.5f;
+	const float Longest = FMath::Max3(Max.X - Min.X, Max.Y - Min.Y, Max.Z - Min.Z);
+	const float S = (Longest > 0.5f) ? (68.0f / Longest) : 1.0f;
+	const FRotator Upright(0.0, 0.0, 90.0);  // +Y long axis -> +Z (head up)
+
+	for (int32 Idx = 0; Idx < Parts.Num(); ++Idx)
+	{
+		FName Name = MakeUniqueObjectName(GetRootComponent(), UStaticMeshComponent::StaticClass(),
+			*FString::Printf(TEXT("RacketPartMesh%d"), Idx));
+		UStaticMeshComponent* PartMesh = NewObject<UStaticMeshComponent>(this, Name);
+		PartMesh->SetupAttachment(SceneRoot);
+		PartMesh->SetStaticMesh(Parts[Idx]);
+		PartMesh->SetRelativeRotation(Upright);
+		PartMesh->SetRelativeScale3D(FVector(S));
+		// Keep the shared-frame arrangement; the grip end lands on the slot
+		// (the assembly's bottom tip = -34 cm from the centered position).
+		PartMesh->SetRelativeLocation(Upright.RotateVector(S * (Center - Parts[Idx]->GetBounds().Origin))
+			+ FVector(0.0, 0.0, 34.0f));
+		PartMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		PartMesh->SetGenerateOverlapEvents(false);
+		PartMesh->SetMobility(EComponentMobility::Movable);
+		PartMesh->RegisterComponent();
+	}
+
+	Handle->SetVisibility(false);
+	FrameTop->SetVisibility(false);
+	FrameBottom->SetVisibility(false);
+	FrameLeft->SetVisibility(false);
+	FrameRight->SetVisibility(false);
+	StringBed->SetVisibility(false);
 }
 
 void ATennisRacket::Tick(float DeltaSeconds)

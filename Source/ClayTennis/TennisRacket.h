@@ -58,5 +58,6 @@ protected:
 	FRotator BaseRelativeRotation = FRotator::ZeroRotator;
 
 	void BuildRacket();
+	void BuildSpriteRacket(const TArray<UStaticMesh*>& Parts);
 	void ApplyTints();
 };
