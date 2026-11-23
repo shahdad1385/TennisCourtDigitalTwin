@@ -9,6 +9,7 @@
 #include "TennisPlayerPawn.generated.h"
 
 class UCameraComponent;
+class USkeletalMeshComponent;
 class USpringArmComponent;
 class USphereComponent;
 class UStaticMeshComponent;
@@ -110,6 +111,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Tennis")
 	TObjectPtr<UStaticMeshComponent> BodyMesh;
 
+	/** Skeletal mannequin used when the copied Mannequin assets exist. */
+	UPROPERTY(VisibleAnywhere, Category = "Tennis")
+	TObjectPtr<USkeletalMeshComponent> PlayerMesh;
+
 	UPROPERTY(VisibleAnywhere, Category = "Tennis")
 	TObjectPtr<USpringArmComponent> CameraBoom;
 
@@ -163,6 +168,11 @@ protected:
 	FTennisSpringState AimYawSpring;
 	FTennisSpringState AimPitchSpring;
 
+	int32 LocomotionAnimState = -1;  // -1 none, 0 idle, 1 walk, 2 run
+
+	float SwingAnimTime = 0.0f;
+	float SwingAnimDuration = 0.28f;
+
 	float CameraZoom = 720.0f;
 	float TargetCameraZoom = 720.0f;
 
@@ -177,6 +187,8 @@ protected:
 	void UpdateMovement(float DeltaSeconds);
 	void UpdateCamera(float DeltaSeconds);
 	void ApplyBodyVisual();
+	void UpdateLocomotionAnim();
+	void UpdateSwingAnim(float DeltaSeconds);
 	void FaceNet();
 	FVector ClampHumanAim(const FVector& Target) const;
 };

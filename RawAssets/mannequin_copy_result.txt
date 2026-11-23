@@ -1,0 +1,166 @@
+﻿Mannequin minimal dependency closure - copy result
+Generated: 2026-11-23 16:25:25
+Source: C:\Users\shahd\Desktop\Shahdad\Code\TennisRobotDigitalTwin\Content\Characters\Mannequins
+Target: C:\Projects\ClayTennis\Content\Characters\Mannequins
+
+Purpose: play MM_Idle / MM_Walk_Fwd / MM_Run_Fwd on SKM_Manny from C++ in single-node mode
+(no Animation Blueprint, no Control Rig, no PhysicsAsset at runtime).
+
+Seed decision: SKM_Manny references MI_Manny_02: TRUE
+
+=== Copied files (28 files, 162.1 MB total) ===
+  Animations\Manny\MM_Idle.uasset  (1,436,737 bytes)
+  Animations\Manny\MM_Run_Fwd.uasset  (482,548 bytes)
+  Animations\Manny\MM_Walk_Fwd.uasset  (549,054 bytes)
+  Materials\Functions\CA_Mannequin.uasset  (4,812 bytes)
+  Materials\Functions\ChromaticCurve.uasset  (6,306 bytes)
+  Materials\Functions\MF_Diffraction.uasset  (32,183 bytes)
+  Materials\Functions\MF_logo3layers.uasset  (56,603 bytes)
+  Materials\Functions\ML_BaseColorFallOff.uasset  (13,437 bytes)
+  Materials\Instances\Manny\MI_Manny_01.uasset  (21,590 bytes)
+  Materials\Instances\Manny\MI_Manny_02.uasset  (24,853 bytes)
+  Materials\M_Mannequin.uasset  (83,079 bytes)
+  Meshes\SKM_Manny.uasset  (34,534,883 bytes)
+  Meshes\SK_Mannequin.uasset  (160,872 bytes)
+  Textures\Manny\T_Manny_01_ASAOPMASK_MSK.uasset  (3,612,605 bytes)
+  Textures\Manny\T_Manny_01_BN.uasset  (18,514,168 bytes)
+  Textures\Manny\T_Manny_01_CCRCCPlastic_MSK.uasset  (10,271,972 bytes)
+  Textures\Manny\T_Manny_01_D.uasset  (5,740,376 bytes)
+  Textures\Manny\T_Manny_01_MSR_MSK.uasset  (11,038,184 bytes)
+  Textures\Manny\T_Manny_01_N.uasset  (7,198,251 bytes)
+  Textures\Manny\T_Manny_01_Tan.uasset  (1,357,770 bytes)
+  Textures\Manny\T_Manny_02_ASAOPMASK_MSK.uasset  (8,341,381 bytes)
+  Textures\Manny\T_Manny_02_BN.uasset  (21,139,527 bytes)
+  Textures\Manny\T_Manny_02_CCRCCPlastic_MSK.uasset  (13,144,043 bytes)
+  Textures\Manny\T_Manny_02_D.uasset  (9,033,544 bytes)
+  Textures\Manny\T_Manny_02_MSR_MSK.uasset  (13,677,610 bytes)
+  Textures\Manny\T_Manny_02_N.uasset  (7,269,335 bytes)
+  Textures\Manny\T_Manny_02_Tan.uasset  (2,153,790 bytes)
+  Textures\Shared\T_UE_Logo_M.uasset  (69,960 bytes)
+
+=== Dependency graph (Mannequins-scope references found in each copied file) ===
+  Animations\Manny\MM_Idle.uasset ->
+      /Game/Characters/Mannequins/Animations/Manny/MM_Idle
+      /Game/Characters/Mannequins/Meshes/SK_Mannequin
+  Animations\Manny\MM_Run_Fwd.uasset ->
+      /Game/Characters/Mannequins/Animations/Manny/MM_Run_Fwd
+      /Game/Characters/Mannequins/Meshes/SK_Mannequin
+  Animations\Manny\MM_Walk_Fwd.uasset ->
+      /Game/Characters/Mannequins/Animations/Manny/MM_Walk_Fwd
+      /Game/Characters/Mannequins/Meshes/SK_Mannequin
+  Materials\Functions\CA_Mannequin.uasset ->
+      /Game/Characters/Mannequins/Materials/Functions/CA_Mannequin
+      /Game/Characters/Mannequins/Materials/Functions/ChromaticCurve
+  Materials\Functions\ChromaticCurve.uasset ->
+      /Game/Characters/Mannequins/Materials/Functions/ChromaticCurve
+  Materials\Functions\MF_Diffraction.uasset ->
+      /Game/Characters/Mannequins/Materials/Functions/CA_Mannequin
+      /Game/Characters/Mannequins/Materials/Functions/ChromaticCurve
+      /Game/Characters/Mannequins/Materials/Functions/MF_Diffraction
+  Materials\Functions\MF_logo3layers.uasset ->
+      /Game/Characters/Mannequins/Materials/Functions/MF_logo3layers
+      /Game/Characters/Mannequins/Textures/Shared/T_UE_Logo_M
+  Materials\Functions\ML_BaseColorFallOff.uasset ->
+      /Game/Characters/Mannequins/Materials/Functions/ML_BaseColorFallOff
+  Materials\Instances\Manny\MI_Manny_01.uasset ->
+      /Game/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_01
+      /Game/Characters/Mannequins/Materials/M_Mannequin
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_ASAOPMASK_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_BN
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_CCRCCPlastic_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_D
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_MSR_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_N
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_Tan
+  Materials\Instances\Manny\MI_Manny_02.uasset ->
+      /Game/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_01
+      /Game/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_02
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_ASAOPMASK_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_BN
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_CCRCCPlastic_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_D
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_MSR_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_N
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_Tan
+      /Game/Characters/Mannequins/Textures/Shared/T_UE_Logo_M
+  Materials\M_Mannequin.uasset ->
+      /Game/Characters/Mannequins/Materials/Functions/MF_Diffraction
+      /Game/Characters/Mannequins/Materials/Functions/MF_logo3layers
+      /Game/Characters/Mannequins/Materials/Functions/ML_BaseColorFallOff
+      /Game/Characters/Mannequins/Materials/M_Mannequin
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_ASAOPMASK_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_BN
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_CCRCCPlastic_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_D
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_MSR_MSK
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_N
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_Tan
+  Meshes\SKM_Manny.uasset ->
+      /Game/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_01
+      /Game/Characters/Mannequins/Materials/Instances/Manny/MI_Manny_02
+      /Game/Characters/Mannequins/Meshes/SK_Mannequin
+      /Game/Characters/Mannequins/Meshes/SKM_Manny
+      /Game/Characters/Mannequins/Rigs/ABP_Manny_PostProcess
+      /Game/Characters/Mannequins/Rigs/CR_Mannequin_Body
+      /Game/Characters/Mannequins/Rigs/PA_Mannequin
+  Meshes\SK_Mannequin.uasset ->
+      /Game/Characters/Mannequins/Meshes/SK_Mannequin
+      /Game/Characters/Mannequins/Meshes/SKM_Manny
+      /Game/Characters/Mannequins/Meshes/SKM_Quinn
+      /Game/Characters/Mannequins/Meshes/SKM_Quinn_Simple
+  Textures\Manny\T_Manny_01_ASAOPMASK_MSK.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_ASAOPMASK_MSK
+  Textures\Manny\T_Manny_01_BN.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_BN
+  Textures\Manny\T_Manny_01_CCRCCPlastic_MSK.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_CCRCCPlastic_MSK
+  Textures\Manny\T_Manny_01_D.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_D
+  Textures\Manny\T_Manny_01_MSR_MSK.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_MSR_MSK
+  Textures\Manny\T_Manny_01_N.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_N
+  Textures\Manny\T_Manny_01_Tan.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_01_Tan
+  Textures\Manny\T_Manny_02_ASAOPMASK_MSK.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_ASAOPMASK_MSK
+  Textures\Manny\T_Manny_02_BN.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_BN
+  Textures\Manny\T_Manny_02_CCRCCPlastic_MSK.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_CCRCCPlastic_MSK
+  Textures\Manny\T_Manny_02_D.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_D
+  Textures\Manny\T_Manny_02_MSR_MSK.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_MSR_MSK
+  Textures\Manny\T_Manny_02_N.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_N
+  Textures\Manny\T_Manny_02_Tan.uasset ->
+      /Game/Characters/Mannequins/Textures/Manny/T_Manny_02_Tan
+  Textures\Shared\T_UE_Logo_M.uasset ->
+      /Game/Characters/Mannequins/Textures/Shared/T_UE_Logo_M
+
+=== Referenced but intentionally NOT copied (per policy) ===
+  /Game/Characters/Mannequins/Meshes/SKM_Quinn
+  /Game/Characters/Mannequins/Meshes/SKM_Quinn_Simple
+  /Game/Characters/Mannequins/Rigs/ABP_Manny_PostProcess
+  /Game/Characters/Mannequins/Rigs/CR_Mannequin_Body
+  /Game/Characters/Mannequins/Rigs/PA_Mannequin
+
+=== /Game references OUTSIDE /Game/Characters/Mannequins (not copied) ===
+  (none)
+
+=== Referenced Mannequins packages whose source file was not found ===
+  (none)
+
+=== Verification of copied set (byte scan of target files) ===
+Files copied: 28; integrity mismatches (size/MD5): 0
+  [EXCLUDED-BY-POLICY (OK for runtime single-node anim)] /Game/Characters/Mannequins/Rigs/ABP_Manny_PostProcess  (referenced by Meshes\SKM_Manny.uasset)
+  [EXCLUDED-BY-POLICY (OK for runtime single-node anim)] /Game/Characters/Mannequins/Rigs/CR_Mannequin_Body  (referenced by Meshes\SKM_Manny.uasset)
+  [EXCLUDED-BY-POLICY (OK for runtime single-node anim)] /Game/Characters/Mannequins/Rigs/PA_Mannequin  (referenced by Meshes\SKM_Manny.uasset)
+  [EXCLUDED-BY-POLICY (OK for runtime single-node anim)] /Game/Characters/Mannequins/Meshes/SKM_Quinn  (referenced by Meshes\SK_Mannequin.uasset)
+  [EXCLUDED-BY-POLICY (OK for runtime single-node anim)] /Game/Characters/Mannequins/Meshes/SKM_Quinn_Simple  (referenced by Meshes\SK_Mannequin.uasset)
+No hard-missing packages: the only unresolved references are the intentionally excluded
+animation-blueprint / rig / physics assets, which are not required to load the mesh,
+skeleton, materials and single-node anim sequences at runtime.
+
+Excluded by policy (never copied): ABP_, CR_, IK_Mannequin, RTG_, PA_Mannequin, Quinn, _Simple, Mannequin_UE4, \Poses\, \ThirdPerson\

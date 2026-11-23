@@ -8,6 +8,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/ChildActorComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -69,10 +70,19 @@ ATennisPlayerPawn::ATennisPlayerPawn()
 	BodyMesh->SetupAttachment(CollisionRoot);
 	BodyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BodyMesh->SetGenerateOverlapEvents(false);
-	// Cylinder is r50 x h200 cm: scale 0.36/0.36/0.90 -> r18 cm, 180 cm tall.
-	// The root rides at StandHeightCm (90), so the body spans 0..180 cm.
 	BodyMesh->SetRelativeScale3D(FVector(0.36, 0.36, 0.90));
 	BodyMesh->SetCastShadow(true);
+
+	// Skeletal mannequin (used when the copied Mannequin assets exist);
+	// animated in single-node mode from code - no authored animation assets.
+	PlayerMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("PlayerMesh"));
+	PlayerMesh->SetupAttachment(CollisionRoot);
+	PlayerMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	PlayerMesh->SetGenerateOverlapEvents(false);
+	PlayerMesh->SetCastShadow(true);
+	PlayerMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	PlayerMesh->SetRelativeLocation(FVector(0.0, 0.0, -StandHeightCm));
+	PlayerMesh->SetVisibility(false);  // enabled only if the mesh loads
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> CylinderFinder(TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
 	if (CylinderFinder.Succeeded())
@@ -146,9 +156,52 @@ void ATennisPlayerPawn::ApplyBodyVisual()
 		return;
 	}
 
-	// User-provided character model wins; the tinted cylinder is the fallback.
-	// The Tripo GLB imports as several body parts sharing one local frame, so
-	// every part is attached at a common transform and normalized together.
+	// 1) Preferred: the copied Mannequin skeletal mesh, animated from code.
+	if (USkeletalMesh* Manny = LoadObject<USkeletalMesh>(nullptr,
+		TEXT("/Game/Characters/Mannequins/Meshes/SKM_Manny.SKM_Manny")))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[PAWN] mannequin loaded, applying"));
+		PlayerMesh->SetSkeletalMesh(Manny);
+		PlayerMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+
+		// Normalize to 180 cm; the mannequin root sits at its feet, and the
+		// pawn root rides at hip height, so shift down by the stance height.
+		const FBoxSphereBounds B = Manny->GetBounds();
+		const float HeightCm = FMath::Max(2.0f * B.BoxExtent.Z, 1.0f);
+		const float S = 180.0f / HeightCm;
+		PlayerMesh->SetRelativeScale3D(FVector(S));
+		PlayerMesh->SetRelativeLocation(FVector(0.0, 0.0, -StandHeightCm));
+
+		// Start idle; UpdateLocomotionAnim swaps Walk/Run from the speed.
+		if (UAnimationAsset* Idle = LoadObject<UAnimationAsset>(nullptr,
+			TEXT("/Game/Characters/Mannequins/Animations/Manny/MM_Idle.MM_Idle")))
+		{
+			PlayerMesh->SetAnimation(Idle);
+			PlayerMesh->PlayAnimation(Idle, true);
+		}
+
+		PlayerMesh->SetVisibility(true);
+		LocomotionAnimState = 0;
+
+		// Hide the static fallbacks beneath the real model.
+		BodyMesh->SetVisibility(false);
+		BodyMesh->SetCastShadow(false);
+
+		// Racket rides the right hand bone (the swing still rotates it).
+		// Pitch +90 maps the racket's grip->head axis (+Z) onto the hand
+		// bone's finger axis (+X); grip sits at the bone origin.
+		if (RacketSlot)
+		{
+			RacketSlot->AttachToComponent(PlayerMesh,
+				FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r"));
+			RacketSlot->SetRelativeLocation(FVector::ZeroVector);
+			RacketSlot->SetRelativeRotation(FRotator(90.0, 0.0, 0.0));
+		}
+		return;
+	}
+
+	// 2) Fallback: the imported static character parts.
+	UE_LOG(LogTemp, Warning, TEXT("[PAWN] mannequin NOT loaded - using static fallback"));
 	TArray<UStaticMesh*> Parts;
 	if (UStaticMesh* Single = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Sprites/SM_PlayerMale.SM_PlayerMale")))
 	{
@@ -221,6 +274,56 @@ void ATennisPlayerPawn::Tick(float DeltaSeconds)
 
 	UpdateMovement(DeltaSeconds);
 	UpdateCamera(DeltaSeconds);
+	UpdateLocomotionAnim();
+	UpdateSwingAnim(DeltaSeconds);
+}
+
+void ATennisPlayerPawn::UpdateSwingAnim(float DeltaSeconds)
+{
+	if (!PlayerMesh || !PlayerMesh->GetSkeletalMeshAsset())
+	{
+		return;
+	}
+
+	if (SwingAnimTime > 0.0f)
+	{
+		SwingAnimTime = FMath::Max(0.0f, SwingAnimTime - DeltaSeconds);
+		const float Alpha = 1.0f - (SwingAnimTime / SwingAnimDuration);
+		// One smooth torso twist: backswing then follow-through.
+		const float Twist = -55.0f * FMath::Sin(Alpha * PI);
+		PlayerMesh->SetRelativeRotation(FRotator(0.0f, Twist, 0.0f));
+	}
+	else if (!PlayerMesh->GetRelativeRotation().IsNearlyZero())
+	{
+		PlayerMesh->SetRelativeRotation(FRotator::ZeroRotator);
+	}
+}
+
+void ATennisPlayerPawn::UpdateLocomotionAnim()
+{
+	if (!PlayerMesh || !PlayerMesh->GetSkeletalMeshAsset())
+	{
+		return;
+	}
+
+	const float Speed = MoveVelocity.Size();
+	const int32 State = (Speed > 320.0f) ? 2 : ((Speed > 40.0f) ? 1 : 0);
+	if (State == LocomotionAnimState)
+	{
+		return;
+	}
+	LocomotionAnimState = State;
+
+	const TCHAR* AnimPath = (State == 2)
+		? TEXT("/Game/Characters/Mannequins/Animations/Manny/MM_Run_Fwd.MM_Run_Fwd")
+		: (State == 1)
+			? TEXT("/Game/Characters/Mannequins/Animations/Manny/MM_Walk_Fwd.MM_Walk_Fwd")
+			: TEXT("/Game/Characters/Mannequins/Animations/Manny/MM_Idle.MM_Idle");
+
+	if (UAnimationAsset* Anim = LoadObject<UAnimationAsset>(nullptr, AnimPath))
+	{
+		PlayerMesh->PlayAnimation(Anim, true);
+	}
 }
 
 void ATennisPlayerPawn::UpdateMovement(float DeltaSeconds)
@@ -534,6 +637,10 @@ void ATennisPlayerPawn::PlayHitReaction(bool bServe)
 	ShakeDuration = bServe ? 0.26f : 0.20f;
 	ShakeTime = ShakeDuration;
 	ShakeAmplitude = bServe ? 3.2f : 2.0f;
+
+	// Procedural swing: torso twist + racket arc together read as a stroke.
+	SwingAnimDuration = bServe ? 0.38f : 0.26f;
+	SwingAnimTime = SwingAnimDuration;
 
 	if (Racket)
 	{
