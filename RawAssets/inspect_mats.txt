@@ -1,0 +1,9 @@
+net tex: None
+M_Net blend=<BlendMode.BLEND_MASKED: 1> twosided=True exprs=2
+opacity_mask_node=None
+base_node=<Object '/Game/Materials/M_Net.M_Net:MaterialExpressionConstant3Vector_0' (0x00000708E5831340) Class 'MaterialExpressionConstant3Vector'>
+MI_ClayCourt -> <Object '/Game/Materials/MI_ClayCourt.MI_ClayCourt' (0x00000708E4E5C800) Class 'MaterialInstanceConstant'>
+MI_Net -> <Object '/Game/Materials/MI_Net.MI_Net' (0x00000708E4E5E000) Class 'MaterialInstanceConstant'>
+MI_Crowd -> <Object '/Game/Materials/MI_Crowd.MI_Crowd' (0x00000708E4E5F000) Class 'MaterialInstanceConstant'>
+MI_TennisBall -> <Object '/Game/Materials/MI_TennisBall.MI_TennisBall' (0x00000708E3C3F800) Class 'MaterialInstanceConstant'>
+MI_CourtLine -> <Object '/Game/Materials/MI_CourtLine.MI_CourtLine' (0x00000708D793C800) Class 'MaterialInstanceConstant'>

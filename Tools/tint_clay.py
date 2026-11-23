@@ -1,0 +1,16 @@
+﻿import unreal, sys
+sys.path.insert(0, r"C:\Projects\ClayTennis\Tools")
+import ue_common as U
+m = unreal.EditorAssetLibrary.load_asset("/Game/Materials/M_ClaySurface")
+alb = unreal.EditorAssetLibrary.load_asset("/Game/Textures/T_Clay2_Albedo")
+nrm = unreal.EditorAssetLibrary.load_asset("/Game/Textures/T_Clay2_Normal")
+U.MEL.delete_all_material_expressions(m)
+b = U.tex_param(m, "BaseTex", -900, -250, default=alb)
+tint = U.vector_param(m, "Tint", (1.27, 2.75, 4.20), -900, -60)
+c = U.mul(m, b, tint, -650, -200)
+U.MEL.connect_material_property(c, "", unreal.MaterialProperty.MP_BASE_COLOR)
+U.MEL.connect_material_property(U.scalar_param(m, "Roughness", 0.93, -650, 20), "", unreal.MaterialProperty.MP_ROUGHNESS)
+n = U.tex_param(m, "NormalTex", -900, 240, default=nrm)
+U.MEL.connect_material_property(n, "RGB", unreal.MaterialProperty.MP_NORMAL)
+U.compile_and_save(m)
+unreal.log("[TINT] applied")

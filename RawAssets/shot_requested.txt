@@ -1,0 +1,1 @@
+{"loc": [-160, -260, 95], "target": [-40, 0, 0], "commands": ["r.EyeAdaptation.ExposureCompensation -0.4"]}

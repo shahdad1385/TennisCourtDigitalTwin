@@ -1,0 +1,107 @@
+[
+    {
+        "file":  "T_Clay_Detail_Albedo.png",
+        "width":  2048,
+        "height":  2048,
+        "hasAlpha":  false,
+        "sha256":  "44a91a0c65929eee4c2b845329845342fab28f798ba23fc920e8276fa418defb"
+    },
+    {
+        "file":  "T_Clay_Detail_Normal.png",
+        "width":  2048,
+        "height":  2048,
+        "hasAlpha":  false,
+        "sha256":  "0b1532a17609658bf1a09ebb42010a968a7034e1385969768bed9ac7f6d18376"
+    },
+    {
+        "file":  "T_Clay_Detail_Rough.png",
+        "width":  2048,
+        "height":  2048,
+        "hasAlpha":  false,
+        "sha256":  "d060f180d2813d18e1b521c0d54a3a7d5d449f5f65dc83a262646e30c797bfe1"
+    },
+    {
+        "file":  "T_LinePaint_Albedo.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  false,
+        "sha256":  "7f580756e9ccc93b3574a53b1a545c349a45d5351ed16f3299498aafe86953a3"
+    },
+    {
+        "file":  "T_LinePaint_Normal.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  false,
+        "sha256":  "887725e8856e866aa83904638ce61dfa782966cd7ae61afde2adf73760277622"
+    },
+    {
+        "file":  "T_LinePaint_Rough.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  false,
+        "sha256":  "afa78b303b72e763425d5fba68029a5d8727ed546b1359a608cca3301b623053"
+    },
+    {
+        "file":  "T_Net_Albedo.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  true,
+        "sha256":  "e95351df84a7259122ef8db27136fc4cc497823501d8c3c46f9aeaddefdd99f2"
+    },
+    {
+        "file":  "T_Net_Normal.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  false,
+        "sha256":  "1bbfc2f710452b392080665f589e2365b1905077d410eb40d047023198350635"
+    },
+    {
+        "file":  "T_Ball_Albedo.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  false,
+        "sha256":  "84840034fe46f360f0133682cbad58932a355519f9497ae0fc636b60ef056718"
+    },
+    {
+        "file":  "T_Ball_Normal.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  false,
+        "sha256":  "27e5f70df12f8ae95edc68e53cd2487a2ea49470ece20f87512847dee1c713f5"
+    },
+    {
+        "file":  "T_Ball_Rough.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  false,
+        "sha256":  "1fed6304c19b02f8c71ee2454185a270570ade8661ce43de536add80ae290da4"
+    },
+    {
+        "file":  "T_RacketStrings_Albedo.png",
+        "width":  512,
+        "height":  512,
+        "hasAlpha":  true,
+        "sha256":  "bffff835af7cca3d851965ef5d14889130056e711dfa744c2b07bdc59d1065d7"
+    },
+    {
+        "file":  "T_Crowd_Albedo.png",
+        "width":  1024,
+        "height":  512,
+        "hasAlpha":  false,
+        "sha256":  "1c2f45fbb74f0096d958605402925a151b3b255e7c907e7f187a33e5624a7e04"
+    },
+    {
+        "file":  "T_Court_Logo_Albedo.png",
+        "width":  1024,
+        "height":  1024,
+        "hasAlpha":  true,
+        "sha256":  "35d8484e6b16dd8dfeadea8d25ab7d444ef518af1c1ede85f73e25a2727e6f39"
+    },
+    {
+        "file":  "preview_contact_sheet.png",
+        "width":  1074,
+        "height":  586,
+        "hasAlpha":  false,
+        "sha256":  "4dff1322469822e40208fbe6bdd4d74bd6a27a6f73a9726f7601e62db6046a6a"
+    }
+]

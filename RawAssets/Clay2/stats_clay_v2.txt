@@ -1,0 +1,30 @@
+gen_clay_v2 seed=20261123 outDir=C:\Projects\ClayTennis\RawAssets\Clay2
+PARAMS cMain=0.085 cH2=0.032 cV=0.065 cD=0.04 warpPx=115 streak=0.045 nScale=0.45
+ALBEDO_MEAN_GAIN R=0.99 G=1.03 B=1.09 (1.00 = untouched)
+STAT T_Clay2_Albedo 4096x4096 mean=[176.10,73.94,44.03] std=[18.01,6.89,7.41] min=[62,27,12] max=[241,117,88]
+SEAM T_Clay2_Albedo LR=0.814% TB=0.919% (target<2.0) interior_step=0.787% ratioLR=1.03 ratioTB=1.17 OK
+SWEEP_CONTRAST_PERCENT 5.85 (bandpass 20-256px std/mean, target 4-8%)
+SWEEP_DIRECTION_RATIO 0.51 (gx/gy of bandpass; 0.5-2.0 mixed OK, <0.15 or >6 = stripes)
+SWEEP_BANDS H1=8/512px/50cm H2=6/683px/66cm V=5/819px/80cm DIAG=8/724px/71cm
+STAT T_Clay2_Rough 4096x4096 mean=[193.51,193.51,193.51] std=[28.11,28.11,28.11] min=[158,158,158] max=[244,244,244]
+SEAM T_Clay2_Rough LR=0.521% TB=1.063% (target<2.0) interior_step=0.689% ratioLR=0.76 ratioTB=1.54 OK
+NORMAL_Z mean=0.99 min=0.85 (target 0.85-1.0, OpenGL Y+)
+STAT T_Clay2_Normal 4096x4096 mean=[127.50,127.50,252.49] std=[12.42,13.41,2.92] min=[49,49,217] max=[206,206,255]
+SEAM T_Clay2_Normal LR=1.378% TB=1.791% (target<2.0) interior_step=1.508% ratioLR=0.91 ratioTB=1.19 OK
+STAGE clay_core_s 19.1
+STAT T_Line2_Albedo 1024x1024 mean=[198.88,139.77,119.27] std=[31.56,72.04,80.06] min=[150,62,37] max=[253,251,249]
+SEAM T_Line2_Albedo LR=0.853% TB=0.547% (target<2.0) interior_step=1.175% ratioLR=0.73 ratioTB=0.47 OK
+STAT T_Line2_Rough 1024x1024 mean=[187.51,187.51,187.51] std=[27.64,27.64,27.64] min=[140,140,140] max=[217,217,217]
+SEAM T_Line2_Rough LR=1.121% TB=0.691% (target<2.0) interior_step=1.169% ratioLR=0.96 ratioTB=0.59 OK
+STAGE line_s 0.6
+STAT T_Clay2_Macro 1024x1024 mean=[127.71,127.71,127.71] std=[56.56,56.56,56.56] min=[23,23,23] max=[253,253,253]
+SEAM T_Clay2_Macro LR=0.002% TB=0.001% (target<2.0) interior_step=0.138% ratioLR=0.01 ratioTB=0.01 OK
+STAGE macro_s 0.2
+VERIFY T_Clay2_Albedo.png dims_ok=True sampledMeanR=176.10 minR=66 maxR=240 sane=True
+VERIFY T_Clay2_Rough.png dims_ok=True sampledMeanR=193.51 minR=158 maxR=244 sane=True
+VERIFY T_Clay2_Normal.png dims_ok=True sampledMeanR=127.50 minR=49 maxR=206 sane=True
+VERIFY T_Line2_Albedo.png dims_ok=True sampledMeanR=198.88 minR=150 maxR=253 sane=True
+VERIFY T_Line2_Rough.png dims_ok=True sampledMeanR=187.52 minR=140 maxR=217 sane=True
+VERIFY T_Clay2_Macro.png dims_ok=True sampledMeanR=127.71 minR=23 maxR=253 sane=True
+STAGE preview_s 1.6
+

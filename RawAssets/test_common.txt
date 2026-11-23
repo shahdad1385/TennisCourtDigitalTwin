@@ -1,0 +1,4 @@
+isfile=False
+PROC exists=True
+returned=None
+listed=T_Clay_AO,T_Clay_Diffuse,T_Clay_Normal,T_Clay_Roughness,T_Net_Albedo

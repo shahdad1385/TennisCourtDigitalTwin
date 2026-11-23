@@ -1,0 +1,9 @@
+exists=True
+imported_paths=["/Game/Textures/T_Net_Albedo.T_Net_Albedo"]
+loaded=<Object '/Game/Textures/T_Net_Albedo.T_Net_Albedo' (0x00000B27215DA800) Class 'Texture2D'>
+EXC
+Traceback (most recent call last):
+  File "C:/Projects/ClayTennis/Tools/test_import.py", line 18, in <module>
+    out.append("alpha="+str(a.get_editor_property("has_alpha")))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Exception: Texture2D: Failed to find property 'has_alpha' for attribute 'has_alpha' on 'Texture2D'

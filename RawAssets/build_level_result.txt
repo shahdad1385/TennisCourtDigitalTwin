@@ -1,0 +1,7 @@
+start
+new_level ok
+gameplay court added
+camera auto activate set
+level saved
+viewport set
+actors: 87

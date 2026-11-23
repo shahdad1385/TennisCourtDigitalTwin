@@ -1,0 +1,4 @@
+purged actors: 225
+court components hidden: 41
+net cords: 65
+saved, actors=225

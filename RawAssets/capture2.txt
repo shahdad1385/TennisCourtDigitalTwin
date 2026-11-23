@@ -1,0 +1,5 @@
+start 02:51:15
+window after 10s
+saved C:\Projects\ClayTennis\RawAssets\game_shot_a.png 1296x759
+saved C:\Projects\ClayTennis\RawAssets\game_shot_b.png 1296x759
+done

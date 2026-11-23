@@ -1,0 +1,6 @@
+load=<Object '/Game/Materials/MI_ClayCourt.MI_ClayCourt' (0x000006D472C52800) Class 'MaterialInstanceConstant'>
+smc=<Object '/Game/Maps/TennisCourt.TennisCourt:PersistentLevel.StaticMeshActor_289.StaticMeshComponent0' (0x000006D49C5A5B00) Class 'StaticMeshComponent'>
+mesh=<Object '/Engine/BasicShapes/Plane.Plane' (0x000006D47E954800) Class 'StaticMesh'>
+mat0=<Object '/Game/Materials/MI_ClayCourt.MI_ClayCourt' (0x000006D472C52800) Class 'MaterialInstanceConstant'>
+override_count=1
+court mat0=<Object '/Game/Materials/MI_ClayCourt.MI_ClayCourt' (0x000006D472C52800) Class 'MaterialInstanceConstant'>

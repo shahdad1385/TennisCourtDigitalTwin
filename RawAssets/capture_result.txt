@@ -1,0 +1,9 @@
+start
+[02:26:02] editor launched
+[02:31:54] RC up after 250s
+[02:32:54] console failed: HighResShot 1920x1080 -> The remote server returned an error: (404) Not Found.
+[02:33:14] console failed: r.ScreenPercentage 100 -> The remote server returned an error: (404) Not Found.
+[02:33:34] console failed: HighResShot 1920x1080 -> The remote server returned an error: (404) Not Found.
+[02:33:54] no engine screenshots
+[02:33:59] window captured 720x370
+[02:33:59] done

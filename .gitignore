@@ -1,0 +1,26 @@
+# Unreal Engine generated
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# Visual Studio / IDE
+.vs/
+.idea/
+*.sln
+*.suo
+*.user
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Crash / logs
+*.log
+crash-*.dmp
