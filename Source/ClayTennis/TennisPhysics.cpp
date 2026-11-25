@@ -167,11 +167,17 @@ namespace TennisPhysics
 
 	double GetNetHeightAtY(double YMeters)
 	{
-		const double Normalized = FMath::Clamp(FMath::Abs(YMeters) / TennisSpec::NetHalfWidthM, 0.0, 1.0);
-		// Parabolic sag matches the ITF measurement points: 0.914 m at both
-		// posts and 1.07 m at the center strap.
-		return TennisSpec::NetHeightPostM
-			+ (TennisSpec::NetHeightCenterM - TennisSpec::NetHeightPostM) * (1.0 - Normalized * Normalized);
+		// ITF net profile with singles sticks (matches build_level_v4.py
+		// net_top): 0.914 m at the centre strap, rising linearly to 1.07 m
+		// at the singles sticks, flat 1.07 m from the sticks to the posts.
+		const double A = FMath::Abs(YMeters);
+		if (A >= TennisSpec::SinglesStickYM)
+		{
+			return TennisSpec::NetHeightPostM;
+		}
+		const double Normalized = A / TennisSpec::SinglesStickYM;
+		return TennisSpec::NetHeightCenterM
+			+ (TennisSpec::NetHeightPostM - TennisSpec::NetHeightCenterM) * Normalized;
 	}
 
 	namespace

@@ -52,9 +52,13 @@ namespace TennisSpec
 	constexpr double HardFriction = 0.42;
 
 	// ---- Net ----
-	constexpr double NetHeightPostM = 0.914;
-	constexpr double NetHeightCenterM = 1.07;
+	constexpr double NetHeightPostM = 1.07;    // 3.5 ft at the posts / singles sticks
+	constexpr double NetHeightCenterM = 0.914; // 3 ft at the centre strap
 	constexpr double NetHalfWidthM = 5.485 + 0.914; // doubles sideline + post offset
+	// Singles sticks: centred 0.914 m outside the singles sidelines; they hold
+	// the net flat at 1.07 m from the sticks out to the posts (matches the
+	// net_top() profile built by Tools/build_level_v4.py).
+	constexpr double SinglesStickYM = 4.115 + 0.914;
 	constexpr double NetRestitution = 0.35;
 	constexpr double NetTangentialDamping = 0.82;
 	constexpr double NetCordSpeedRetain = 0.55;

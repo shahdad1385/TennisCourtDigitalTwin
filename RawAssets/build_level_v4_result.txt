@@ -1,7 +1,8 @@
 purged actors: 295
-lines: 12 ITF markings
-court components hidden: 41
-net: 33 cords, 4 rows, 32 band segments
-fence posts: 36
-sprite rocks: 3
-saved, actors=295
+lines: 12 painted stripes (ITF)
+gameplay proxy components hidden: 41
+ISM probe failed: 'StaticMeshActor' object has no attribute 'add_component_by_class'
+instanced meshes available: False
+net: {'band': 66, 'vertical': 105, 'horizontal': 462, 'edge': 2}
+posts: 2 + winder + 2 singles sticks
+saved, actors=676

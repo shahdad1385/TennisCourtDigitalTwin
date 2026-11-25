@@ -1,0 +1,7 @@
+copied: C:\Projects\ClayTennis\RawAssets\Sprites\racket_real\tennis_racquet.glb (381004 bytes)
+imported_object_paths: /Game/Sprites/tennis_racquet_texture_0.tennis_racquet_texture_0; /Game/Sprites/tennis_racquet_texture_1.tennis_racquet_texture_1; /Game/Sprites/tennis_racquet_texture_2.tennis_racquet_texture_2; /Game/Sprites/tennis_racquet_texture_3.tennis_racquet_texture_3; /Game/Sprites/Frame.Frame; /Game/Sprites/material.material; /Game/Sprites/Object_2.Object_2; /Game/Sprites/Object_3.Object_3
+static meshes resolved: 2
+renamed: /Game/Sprites/Object_2 -> /Game/Sprites/SM_RacketReal
+renamed: /Game/Sprites/Object_3 -> /Game/Sprites/SM_RacketReal_1
+bounds: SM_RacketReal origin=(0.000, 402.877, 0.062) box_extent=(230.177, 574.577, 35.686)
+bounds: SM_RacketReal_1 origin=(0.016, 681.245, -0.000) box_extent=(211.467, 275.816, 1.000)
